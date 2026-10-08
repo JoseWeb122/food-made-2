@@ -1,0 +1,188 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, serif;
+
+  --color-ivory: #f6f2ea;
+  --color-cream: #fbf9f4;
+  --color-paper: #fffdf9;
+  --color-sand: #e9e1d3;
+  --color-sanddark: #d8ccb8;
+  --color-clay: #b9a08a;
+  --color-olive: #5a6350;
+  --color-moss: #3f4a39;
+  --color-amber: #a9763c;
+  --color-espresso: #2b2520;
+  --color-ink: #191612;
+  --color-stone: #8b8278;
+
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: var(--color-espresso);
+    color: var(--color-cream);
+  }
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer utilities {
+  .label {
+    font-size: 0.625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  @media (min-width: 768px) {
+    .label {
+      font-size: 0.6875rem;
+    }
+  }
+  .display {
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+  }
+  .ital {
+    font-family: var(--font-serif);
+    font-style: italic;
+    letter-spacing: -0.01em;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .edge-fade {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+}
+
+/* ——— Reveal on scroll ——— */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 1.1s var(--ease-lux),
+    transform 1.1s var(--ease-lux);
+  will-change: opacity, transform;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ——— Marquee ——— */
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 46s linear infinite;
+}
+.marquee-track.rev {
+  animation-direction: reverse;
+}
+.marquee-host:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ——— Micro animations ——— */
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.anim-in {
+  animation: floatIn 0.7s var(--ease-lux) both;
+}
+
+@keyframes scrollDot {
+  0% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(120%);
+    opacity: 0;
+  }
+}
+.scroll-dot {
+  animation: scrollDot 2.4s var(--ease-lux) infinite;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+.pop-in {
+  animation: popIn 0.45s var(--ease-lux) both;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  animation: shimmer 1.6s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
